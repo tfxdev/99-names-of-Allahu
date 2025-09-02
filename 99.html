@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The 99 Names of Allah</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Naskh+Arabic:wght@400;700&family=Marcellus&display=swap" rel="stylesheet">
+    <style>
+        /* Base styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0d121c;
+            overflow-x: hidden; /* Prevent horizontal scroll from shapes */
+        }
+        .font-noto-naskh { font-family: 'Noto Naskh Arabic', serif; }
+        .font-marcellus { font-family: 'Marcellus', serif; }
+
+        /* Animated Background */
+        .background-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, #0d121c, #1f2937, #111827, #0d121c);
+            background-size: 400% 400%;
+            animation: gradient-animation 20s ease infinite;
+        }
+        @keyframes gradient-animation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(16, 185, 129, 0.1);
+            filter: blur(80px);
+            animation: shape-move 25s infinite alternate ease-in-out;
+        }
+        .shape-1 { width: 400px; height: 400px; top: 10%; left: 10%; animation-delay: 0s; }
+        .shape-2 { width: 300px; height: 300px; top: 60%; left: 80%; animation-delay: 5s; background: rgba(59, 130, 246, 0.1); }
+        .shape-3 { width: 250px; height: 250px; top: 70%; left: 15%; animation-delay: 10s; background: rgba(168, 85, 247, 0.1); }
+        @keyframes shape-move {
+            from { transform: translate(0, 0) rotate(0deg); }
+            to { transform: translate(100px, 50px) rotate(30deg); }
+        }
+
+        /* --- THEME DEFINITIONS --- */
+        #names-grid {
+            --arabic-font-size: 2.5rem;
+            --translit-font-size: 1rem;
+            --meaning-font-size: 0.875rem;
+        }
+        .name-arabic { font-size: var(--arabic-font-size); }
+        .transliteration { font-size: var(--translit-font-size); }
+        .meaning { font-size: var(--meaning-font-size); }
+
+        .card-base {
+            border-radius: 1rem;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 1rem;
+            color: white;
+            transition: all 0.3s ease;
+            min-height: 220px; /* Compact height */
+        }
+        
+        /* Theme 3: Crystal Clear */
+        .theme-crystal-clear .card-base { background-color: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); }
+        .theme-crystal-clear .card-base .name-id { position: absolute; top: 1rem; left: 1rem; padding: 0.5rem; background: rgba(255, 255, 255, 0.1); border-radius: 9999px; color: #67e8f9; }
+        
+        /* Theme 5: Sacred Pattern */
+        .theme-sacred-pattern .card-base { background-color: #1f2937; background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); }
+        .theme-sacred-pattern .card-base .name-id { position: absolute; top: 1rem; left: 1rem; color: #2dd4bf; }
+        
+        /* Theme 7: Elegant Lines */
+        .theme-elegant-lines .card-base { background-color: #111827; align-items: stretch; text-align: left; }
+        .theme-elegant-lines .card-base .card-header { display: flex; justify-content: space-between; align-items: baseline; }
+        .theme-elegant-lines .card-base .name-id { color: #f472b6; }
+        .theme-elegant-lines .card-base hr { border-color: rgba(244, 114, 182, 0.3); margin: 0.75rem 0; }
+        
+        /* Theme 15: Earthen Clay */
+        .theme-earthen-clay .card-base { background: linear-gradient(0deg, #d3c2a8, #a89478); color: #3a2e20; }
+        .theme-earthen-clay .card-base .name-id { position: absolute; top: 1rem; left: 1rem; color: #3a2e20; }
+        
+        /* Theme 17: Celestial Sky */
+        .theme-celestial-sky .card-base { background: linear-gradient(to bottom right, #0c4a6e, #1e3a8a); }
+        .theme-celestial-sky .card-base .name-id { position: absolute; top: 1rem; left: 1rem; color: #7dd3fc; }
+        
+        /* Theme 18: Sunburst */
+        .theme-sunburst .card-base { background: radial-gradient(circle, #f97316, #78350f); }
+        .theme-sunburst .card-base .name-id { position: absolute; top: 1rem; left: 1rem; color: #fef08a; }
+
+        /* Theme 20: Pure Light */
+        .theme-pure-light .card-base { background-color: #e2e8f0; color: #1e293b; }
+        .theme-pure-light .card-base .name-id { position: absolute; top: 1rem; left: 1rem; }
+        
+        /* Theme 22: Geometric Cut */
+        .theme-geometric-cut .card-base { background-color: #1f2937; clip-path: polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%); }
+        
+        /* Theme 23: Striped Harmony */
+        .theme-striped-harmony .card-base { background: repeating-linear-gradient(45deg, #1f2937, #1f2937 10px, #374151 10px, #374151 20px); }
+        .theme-striped-harmony .card-base .card-content { background-color: rgba(31, 41, 55, 0.8); padding: 1rem; border-radius: 0.5rem; }
+        
+        /* Theme 24: Tilted Frame */
+        .theme-tilted-frame .card-base { background-color: #111827; }
+        .theme-tilted-frame .card-base:before { content:''; position: absolute; inset: 0.5rem; border: 3px solid #f59e0b; border-radius: 0.75rem; transform: rotate(5deg); transition: all 0.3s ease; }
+        .theme-tilted-frame .card-base:hover:before { transform: rotate(0deg); }
+
+        /* Theme 25: Dotted Matrix */
+        .theme-dotted-matrix .card-base { background-image: radial-gradient(#4b5563 1px, transparent 1px); background-size: 15px 15px; }
+        .theme-dotted-matrix .card-base .card-content { background-color: rgba(17, 24, 39, 0.9); padding: 1rem; border-radius: 0.5rem; }
+        
+        /* Theme 26: Soft Aura */
+        .theme-soft-aura .card-base { background-color: #1f2937; }
+        .theme-soft-aura .card-base:before { content:''; position: absolute; width: 6rem; height: 6rem; background: #db2777; border-radius: 9999px; z-index: 0; opacity: 0.2; filter: blur(40px); }
+
+        /* Theme 27: Modern Minimal */
+        .theme-modern-minimal .card-base { background-color: #1f2937; align-items: flex-start; text-align: left; }
+        .theme-modern-minimal .card-base hr { width: 25%; margin: 0.5rem 0; border-color: #4b5563; }
+        .theme-modern-minimal .card-base .name-id { position: absolute; top: 1rem; right: 1rem; color: #6b7280; }
+        
+        /* Theme 31: White Marble */
+        .theme-white-marble .card-base { background-color: white; color: #333; background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.1"><filter id="f"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23f)"/></svg>'); }
+        .theme-white-marble .card-base .name-id { position: absolute; top: 1rem; left: 1rem; color: #ca8a04; font-family: 'Marcellus', serif; }
+        .theme-white-marble .card-base .transliteration { font-family: 'Marcellus', serif; }
+        
+        /* Theme 32: Subtle Depth */
+        .theme-subtle-depth .card-base { background-color: #111827; border: 1px solid #374151; box-shadow: inset 0 2px 10px black; }
+        .theme-subtle-depth .card-base .name-id { color: #9ca3af; }
+
+        /* Theme 34: Rosy Corner */
+        .theme-rosy-corner .card-base { background-color: #f1f5f9; color: #475569; }
+        .theme-rosy-corner .card-base:before { content: ''; position: absolute; width: 100%; height: 100%; background-color: #fecdd3; opacity: 0.5; clip-path: polygon(0 0, 100% 0, 0 100%); }
+        .theme-rosy-corner .card-base .card-content { position: relative; }
+
+        /* Theme 35: Cool Slate */
+        .theme-cool-slate .card-base { background: linear-gradient(to bottom right, #334155, #1e2937); }
+        .theme-cool-slate .card-base .name-id { color: #94a3b8; }
+
+        /* Theme 36: Deep Ocean */
+        .theme-deep-ocean .card-base { background-color: #082f49; box-shadow: inset 0 0 50px #0c4a6e; }
+        .theme-deep-ocean .card-base .name-id { color: #bae6fd; }
+
+        /* Theme 50: Digital Grid */
+        .theme-digital-grid .card-base { background-color: #111827; }
+        .theme-digital-grid .card-base .grid-overlay { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(10, 1fr); grid-template-rows: repeat(10, 1fr); opacity: 0.1; }
+        .theme-digital-grid .card-base .grid-overlay > div { border: 1px solid #4b5563; }
+        .theme-digital-grid .card-base .card-content { position: relative; }
+        
+        /* --- NEW COLORFUL THEMES --- */
+        /* Theme: Aurora Borealis */
+        .theme-aurora-borealis .card-base { background: linear-gradient(160deg, #1e3a8a, #4f46e5, #9333ea, #db2777); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 0 20px rgba(99, 102, 241, 0.3); }
+        .theme-aurora-borealis .card-base .name-id { color: #a5b4fc; }
+        .theme-aurora-borealis .card-base .name-arabic { color: white; text-shadow: 0 0 8px rgba(255, 255, 255, 0.5); }
+        .theme-aurora-borealis .card-base .transliteration { color: #c4b5fd; }
+        
+        /* Theme: Prism Shard */
+        .theme-prism-shard .card-base { background: rgba(17, 24, 39, 0.7); backdrop-filter: blur(8px); }
+        .theme-prism-shard .card-base::before { content: ''; position: absolute; inset: 0; border-radius: 1rem; padding: 2px; background: linear-gradient(45deg, #f43f5e, #eab308, #84cc16, #22d3ee, #a855f7, #f43f5e); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; }
+        .theme-prism-shard .card-base .name-arabic { background: linear-gradient(45deg, #22d3ee, #a855f7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        /* Theme: Vibrant Gradient */
+        .theme-vibrant-gradient .card-base { background: linear-gradient(45deg, #d946ef, #fb7185, #facc15); }
+        .theme-vibrant-gradient .card-base .name-id { color: rgba(255, 255, 255, 0.8); }
+        .theme-vibrant-gradient .card-base .transliteration { color: rgba(255, 255, 255, 0.9); }
+        .theme-vibrant-gradient .card-base .meaning { color: rgba(255, 255, 255, 0.7); }
+
+        /* Theme: Festival of Colors */
+        .theme-festival-of-colors .card-base { background-color: #f8fafc; color: #475569; }
+        .theme-festival-of-colors .card-base .name-id { color: #ec4899; }
+        .theme-festival-of-colors .card-base .name-arabic { color: #3b82f6; }
+        .theme-festival-of-colors .card-base .transliteration { color: #f97316; }
+        .theme-festival-of-colors .card-base .meaning { color: #10b981; }
+
+        /* Print styles */
+        @media print {
+            body { background: #fff !important; }
+            .background-container { display: none; }
+            .no-print { display: none !important; }
+            #names-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 1rem !important; }
+            .card-base { background: #fff !important; border: 1px solid #ddd; color: #111827 !important; -webkit-print-color-adjust: exact; color-adjust: exact; page-break-inside: avoid; }
+            .card-base * { color: #111827 !important; }
+        }
+    </style>
+</head>
+<body class="text-gray-300 min-h-screen antialiased">
+    
+    <div class="background-container">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+    </div>
+
+    <div class="container mx-auto p-4 md:p-8 relative">
+        <header class="text-center mb-8 md:mb-12 no-print">
+            <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-white">The 99 Names of Allah</h1>
+            <p class="mt-2 text-lg text-emerald-400">Asma-ul-Husna (The Most Beautiful Names)</p>
+        </header>
+
+        <div class="hidden print:block text-center mb-8">
+             <h1 class="text-3xl font-bold text-black">The 99 Names of Allah</h1>
+        </div>
+
+        <div class="bg-gray-900/50 backdrop-blur-md border border-gray-700/50 p-4 rounded-xl mb-8 no-print">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+                <!-- Main Controls -->
+                <div class="flex flex-wrap justify-center md:justify-start items-center gap-4">
+                    <div>
+                        <label for="theme-select" class="text-sm font-medium sr-only">Theme:</label>
+                        <select id="theme-select" class="bg-gray-800 border border-gray-700 text-white text-sm rounded-md focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5">
+                            <option value="theme-modern-minimal">Modern Minimal</option>
+                            <option value="theme-crystal-clear">Crystal Clear</option>
+                            <option value="theme-sacred-pattern">Sacred Pattern</option>
+                            <option value="theme-elegant-lines">Elegant Lines</option>
+                            <option value="theme-aurora-borealis">Aurora Borealis</option>
+                            <option value="theme-prism-shard">Prism Shard</option>
+                            <option value="theme-vibrant-gradient">Vibrant Gradient</option>
+                            <option value="theme-festival-of-colors">Festival of Colors</option>
+                            <option value="theme-earthen-clay">Earthen Clay</option>
+                            <option value="theme-celestial-sky">Celestial Sky</option>
+                            <option value="theme-sunburst">Sunburst</option>
+                            <option value="theme-pure-light">Pure Light</option>
+                            <option value="theme-geometric-cut">Geometric Cut</option>
+                            <option value="theme-striped-harmony">Striped Harmony</option>
+                            <option value="theme-tilted-frame">Tilted Frame</option>
+                            <option value="theme-dotted-matrix">Dotted Matrix</option>
+                            <option value="theme-soft-aura">Soft Aura</option>
+                            <option value="theme-white-marble">White Marble</option>
+                            <option value="theme-subtle-depth">Subtle Depth</option>
+                            <option value="theme-rosy-corner">Rosy Corner</option>
+                            <option value="theme-cool-slate">Cool Slate</option>
+                            <option value="theme-deep-ocean">Deep Ocean</option>
+                            <option value="theme-digital-grid">Digital Grid</option>
+                        </select>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <label for="pronunciation-lang" class="text-sm font-medium sr-only">Pronunciation:</label>
+                        <select id="pronunciation-lang" class="bg-gray-800 border border-gray-700 text-white text-sm rounded-md focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5">
+                            <option value="en" selected>English</option>
+                            <option value="bn">Bangla</option>
+                        </select>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <label for="meaning-lang" class="text-sm font-medium sr-only">Meaning:</label>
+                        <select id="meaning-lang" class="bg-gray-800 border border-gray-700 text-white text-sm rounded-md focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5">
+                            <option value="en" selected>English</option>
+                            <option value="bn">Bangla</option>
+                        </select>
+                    </div>
+                </div>
+                <!-- Font Size Controls -->
+                <div class="flex flex-col gap-2">
+                     <div class="flex items-center gap-2">
+                        <label for="arabic-size" class="text-xs w-20">Arabic</label>
+                        <input id="arabic-size" type="range" min="2" max="5" step="0.1" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer">
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <label for="translit-size" class="text-xs w-20">Transliteration</label>
+                        <input id="translit-size" type="range" min="0.8" max="1.5" step="0.05" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer">
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <label for="meaning-size" class="text-xs w-20">Meaning</label>
+                        <input id="meaning-size" type="range" min="0.7" max="1.2" step="0.05" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer">
+                    </div>
+                </div>
+                <!-- Action Buttons -->
+                <div class="flex justify-center md:justify-end gap-2">
+                    <button onclick="window.print()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition-transform transform hover:scale-105">Print</button>
+                    <button onclick="sharePage()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded-lg transition-transform transform hover:scale-105">Share</button>
+                    <a href="mailto:toufic064@gmail.com" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg transition-transform transform hover:scale-105">Contact</a>
+                </div>
+            </div>
+        </div>
+
+        <div id="names-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+            <div id="loading-indicator" class="col-span-full text-center py-10"><p class="text-xl">Loading beautiful names...</p></div>
+        </div>
+
+        <div id="toast" class="fixed bottom-5 right-5 bg-emerald-500 text-white py-2 px-4 rounded-md shadow-lg opacity-0 transition-opacity duration-300 no-print">Copied!</div>
+    </div>
+
+    <footer class="text-center p-4 mt-8 text-gray-500 text-sm no-print relative">
+        <p>Designed by Toufic</p>
+        <p><a href="mailto:toufic064@gmail.com" class="hover:text-emerald-400 transition-colors">toufic064@gmail.com</a></p>
+    </footer>
+
+    <script>
+        const namesGrid = document.getElementById('names-grid');
+        const pronunciationLangSelect = document.getElementById('pronunciation-lang');
+        const meaningLangSelect = document.getElementById('meaning-lang');
+        const themeSelect = document.getElementById('theme-select');
+        const toast = document.getElementById('toast');
+        const loadingIndicator = document.getElementById('loading-indicator');
+        const arabicSizeSlider = document.getElementById('arabic-size');
+        const translitSizeSlider = document.getElementById('translit-size');
+        const meaningSizeSlider = document.getElementById('meaning-size');
+
+        let allNamesData = [];
+
+        // --- THEME LOGIC ---
+        const THEME_STORAGE_KEY = 'asma-ul-husna-theme';
+        const FONT_SIZE_STORAGE_KEY = 'asma-ul-husna-font-sizes';
+        const themes = Array.from(themeSelect.options).map(opt => opt.value);
+
+        function applyTheme(themeName) {
+            namesGrid.classList.remove(...themes);
+            namesGrid.classList.add(themeName);
+            localStorage.setItem(THEME_STORAGE_KEY, themeName);
+            themeSelect.value = themeName;
+        }
+
+        function loadTheme() {
+            const savedTheme = localStorage.getItem(THEME_STORAGE_KEY) || 'theme-modern-minimal';
+            applyTheme(savedTheme);
+        }
+
+        // --- FONT SIZE LOGIC ---
+        function applyFontSizes(sizes) {
+            namesGrid.style.setProperty('--arabic-font-size', `${sizes.arabic}rem`);
+            namesGrid.style.setProperty('--translit-font-size', `${sizes.translit}rem`);
+            namesGrid.style.setProperty('--meaning-font-size', `${sizes.meaning}rem`);
+            arabicSizeSlider.value = sizes.arabic;
+            translitSizeSlider.value = sizes.translit;
+            meaningSizeSlider.value = sizes.meaning;
+        }
+
+        function saveFontSizes() {
+            const sizes = {
+                arabic: arabicSizeSlider.value,
+                translit: translitSizeSlider.value,
+                meaning: meaningSizeSlider.value
+            };
+            localStorage.setItem(FONT_SIZE_STORAGE_KEY, JSON.stringify(sizes));
+        }
+        
+        function loadFontSizes() {
+            const savedSizes = JSON.parse(localStorage.getItem(FONT_SIZE_STORAGE_KEY)) || { arabic: 2.5, translit: 1, meaning: 0.875 };
+            applyFontSizes(savedSizes);
+        }
+        
+        // --- DATA LOADING & RENDERING ---
+        async function loadAndMergeData() {
+            try {
+                const [baseRes, enRes, bnRes] = await Promise.all([
+                    fetch('base.json'), fetch('english.json'), fetch('bangla.json')
+                ]);
+                if (!baseRes.ok || !enRes.ok || !bnRes.ok) throw new Error('Network response was not ok.');
+                
+                const baseNames = await baseRes.json();
+                const enData = await enRes.json();
+                const bnData = await bnRes.json();
+
+                allNamesData = baseNames.map(name => ({
+                    id: name.id,
+                    arabic: name.arabic,
+                    transliteration: { en: enData[name.id]?.transliteration || 'N/A', bn: bnData[name.id]?.transliteration || 'N/A' },
+                    meaning: { en: enData[name.id]?.meaning || 'N/A', bn: bnData[name.id]?.meaning || 'N/A' }
+                }));
+                renderNames();
+            } catch (error) {
+                console.error('Failed to load names data:', error);
+                namesGrid.innerHTML = `<div class="col-span-full text-center py-10"><p class="text-xl text-red-400">Failed to load names.</p></div>`;
+            }
+        }
+        
+        function renderNames() {
+            const pronunLang = pronunciationLangSelect.value;
+            const meaningLang = meaningLangSelect.value;
+            
+            namesGrid.innerHTML = ''; 
+            if (allNamesData.length === 0) {
+                 namesGrid.appendChild(loadingIndicator);
+                 return;
+            }
+
+            allNamesData.forEach(name => {
+                const card = document.createElement('div');
+                card.className = 'card-base group';
+                
+                const contentToCopy = `${name.id}. ${name.arabic}\n Pronunciation: ${name.transliteration[pronunLang]}\n Meaning: ${name.meaning[meaningLang]}`;
+
+                card.innerHTML = `
+                    <button onclick="copyToClipboard(this)" data-copy-text="${contentToCopy.replace(/"/g, '&quot;')}" class="no-print absolute top-2 right-2 p-2 rounded-full text-gray-400 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/30 hover:text-white z-10">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                    </button>
+                    <div class="card-header w-full">
+                        <span class="name-id font-bold text-lg">${String(name.id).padStart(2, '0')}</span>
+                    </div>
+                    <div class="card-content">
+                        <h2 class="name-arabic font-noto-naskh my-2">${name.arabic}</h2>
+                        <p class="transliteration font-semibold">${name.transliteration[pronunLang]}</p>
+                        <p class="meaning text-gray-400">${name.meaning[meaningLang]}</p>
+                    </div>
+                    <div class="grid-overlay" aria-hidden="true">${'<div></div>'.repeat(100)}</div>
+                    <hr/>
+                `;
+                namesGrid.appendChild(card);
+            });
+        }
+
+        function copyToClipboard(button) {
+            const text = button.getAttribute('data-copy-text');
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            showToast();
+        }
+
+        function showToast(message = "Copied!") {
+            toast.textContent = message;
+            toast.classList.remove('opacity-0');
+            setTimeout(() => { toast.classList.add('opacity-0'); }, 2000);
+        }
+        
+        function sharePage() {
+            const textarea = document.createElement('textarea');
+            textarea.value = window.location.href;
+            // Make the textarea out of sight
+            textarea.style.position = 'fixed';
+            textarea.style.top = '-9999px';
+            textarea.style.left = '-9999px';
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                showToast("Page URL copied!");
+            } catch (err) {
+                console.error("Share failed:", err);
+                showToast("Failed to copy URL.");
+            }
+            document.body.removeChild(textarea);
+        }
+        
+        // --- EVENT LISTENERS ---
+        themeSelect.addEventListener('change', (e) => applyTheme(e.target.value));
+        pronunciationLangSelect.addEventListener('change', renderNames);
+        meaningLangSelect.addEventListener('change', renderNames);
+        
+        arabicSizeSlider.addEventListener('input', () => {
+            namesGrid.style.setProperty('--arabic-font-size', `${arabicSizeSlider.value}rem`);
+            saveFontSizes();
+        });
+        translitSizeSlider.addEventListener('input', () => {
+            namesGrid.style.setProperty('--translit-font-size', `${translitSizeSlider.value}rem`);
+            saveFontSizes();
+        });
+        meaningSizeSlider.addEventListener('input', () => {
+            namesGrid.style.setProperty('--meaning-font-size', `${meaningSizeSlider.value}rem`);
+            saveFontSizes();
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadTheme();
+            loadFontSizes();
+            loadAndMergeData();
+        });
+    </script>
+</body>
+</html>
+
