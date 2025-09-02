@@ -3,11 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The 99 Names of Allah</title>
+    
+    <!-- SEO Meta Tags -->
+    <title>The 99 Names of Allah (Asma-ul-Husna) - Meanings in English & Bangla</title>
+    <meta name="description" content="Explore the 99 beautiful names of Allah (Asma-ul-Husna) with Arabic text, transliteration, and meanings in both English and Bangla. A customizable, modern, and beautiful interface.">
+    <meta name="keywords" content="99 names of Allah, Asma-ul-Husna, names of God, Allah names, Islam, Quran, English meaning, Bangla meaning, beautiful names of Allah">
+    <link rel="canonical" href="https://99namesofallah.website">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://99namesofallah.website">
+    <meta property="og:title" content="The 99 Names of Allah (Asma-ul-Husna) - Meanings in English & Bangla">
+    <meta property="og:description" content="Explore the 99 beautiful names of Allah with Arabic text, transliteration, and meanings in both English and Bangla.">
+    <meta property="og:image" content="https://placehold.co/1200x630/0d121c/a5b4fc?text=Asma-ul-Husna">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://99namesofallah.website">
+    <meta property="twitter:title" content="The 99 Names of Allah (Asma-ul-Husna) - Meanings in English & Bangla">
+    <meta property="twitter:description" content="Explore the 99 beautiful names of Allah with Arabic text, transliteration, and meanings in both English and Bangla.">
+    <meta property="twitter:image" content="https://placehold.co/1200x630/0d121c/a5b4fc?text=Asma-ul-Husna">
+
+    <!-- Fonts and Styles -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Naskh+Arabic:wght@400;700&family=Marcellus&display=swap" rel="stylesheet">
+    
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "The 99 Names of Allah (Asma-ul-Husna)",
+      "description": "An interactive web application to explore the 99 beautiful names of Allah with translations in English and Bangla.",
+      "url": "https://99namesofallah.website",
+      "publisher": {
+        "@type": "Person",
+        "name": "Toufic"
+      },
+      "inLanguage": ["en", "bn"],
+      "mainEntity": {
+        "@type": "ItemList",
+        "name": "The 99 Names of Allah",
+        "itemListElement": [
+          {"@type": "ListItem", "position": 1, "name": "Ar-Rahman"},
+          {"@type": "ListItem", "position": 2, "name": "Ar-Rahim"},
+          {"@type": "ListItem", "position": 3, "name": "Al-Malik"}
+        ]
+      }
+    }
+    </script>
+    
     <style>
         /* Base styles */
         body {
@@ -217,7 +264,7 @@
         <div class="shape shape-3"></div>
     </div>
 
-    <div class="container max-w-7xl mx-auto p-4 md:p-8 relative">
+    <main class="container max-w-7xl mx-auto p-4 md:p-8 relative">
         <header class="text-center mb-8 md:mb-12 no-print">
             <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-white">The 99 Names of Allah</h1>
             <p class="mt-2 text-lg text-emerald-400">Asma-ul-Husna (The Most Beautiful Names)</p>
@@ -298,12 +345,12 @@
             </div>
         </div>
 
-        <div id="names-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+        <div id="names-grid" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
             <div id="loading-indicator" class="col-span-full text-center py-10"><p class="text-xl">Loading beautiful names...</p></div>
         </div>
 
         <div id="toast" class="fixed bottom-5 right-5 bg-emerald-500 text-white py-2 px-4 rounded-md shadow-lg opacity-0 transition-opacity duration-300 no-print">Copied!</div>
-    </div>
+    </main>
 
     <!-- Share Modal -->
     <div id="share-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 opacity-0 pointer-events-none transition-opacity duration-300 no-print">
